@@ -1,0 +1,30 @@
+.my-extension-container {
+  /* height: 300px; */
+  width: 100%;
+  /* background-color: #c0c0c0; */
+  opacity: 0.5;
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+}
+
+.button-block {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+.button-dom {
+  margin: 5px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: #4F4F4F;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+.button-dom:hover {
+  background-color: #0c0c0c;
+}

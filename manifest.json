@@ -9,6 +9,7 @@
     "<all_urls>"
   ],
   "permissions": [
+    "offscreen",
     "storage",
     "activeTab",
     "scripting",

@@ -5,7 +5,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 chrome.webRequest.onBeforeRequest.addListener(
   async (details) => {
     // 初步檢查 (不符就直接丟掉)
-    if (details.method !== 'POST' || 
+    if (details.method !== 'POST' ||
       !(details.url.includes('127.0.0.1') || details.url.includes('localhost'))
     ) return
 
@@ -59,12 +59,18 @@ chrome.webRequest.onBeforeRequest.addListener(
     if (isCollectUrlsTask) {
       console.log("=== Begin Collect Urls ===")
       const { workType } = decodedBody;
-      if (workType === 'collectUrls') {
-        let urlsList = await collectUrls()
+      console.log('workType', workType, decodedBody)
 
-        let res = await saveNewsUrls(urlsList)
-        console.log(res)
-      }
+      let urlsList = await collectUrls()
+      console.log('urlsList', urlsList)
+      let res = await saveNewsUrls(urlsList)
+      console.log('saveNewsUrls', res)
+      // if (workType === 'collectUrls') {
+      //   let urlsList = await collectUrls()
+      //   console.log('urlsList', urlsList)
+      //   let res = await saveNewsUrls(urlsList)
+      //   console.log('saveNewsUrls', res)
+      // }
     }
     console.log('Finish Task.')
   },
@@ -196,11 +202,11 @@ async function getNewsUrls(cateId, page) {
 }
 
 async function collectUrls() {
-  const cateIds = ['world', 'business']
+  const cateIds = ['world', 'business', 'arts', 'opinion', 'food', 'well', 'travel']
   let urlsList = []
   for (let cateId of cateIds) {
     console.group(`== cateId: ${cateId} ==`)
-    for (let page = 1; page < 5; page++) {
+    for (let page = 1; page < 10; page++) {
       let urls = await getNewsUrls(cateId, page)
       urlsList.push(...urls)
       console.log(`page: ${page}, urls: ${urls.length}, total: ${urlsList.length}`)

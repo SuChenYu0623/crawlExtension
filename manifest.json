@@ -20,6 +20,7 @@
     "http://127.0.0.1:8000/*"
   ],
   "background": {
+    "type": "module",
     "service_worker": "background/background.js"
   },
   "action": {

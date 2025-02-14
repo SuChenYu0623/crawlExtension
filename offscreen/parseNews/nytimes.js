@@ -1,4 +1,4 @@
-function parseNews(doc) {
+export function parseNews(doc) {
   let item = {}
   try {
     let mainDom = doc.querySelector('article[id="story"]') || doc.querySelector('article[id="story"] header')
@@ -26,5 +26,3 @@ function parseNews(doc) {
   }
   return item
 }
-
-export default parseNews;

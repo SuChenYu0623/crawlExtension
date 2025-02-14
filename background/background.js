@@ -30,18 +30,20 @@ chrome.webRequest.onBeforeRequest.addListener(
     if (isLoopUrlTask) {
       console.log("=== Begin Loop Url ===")
       const { workType, taskUrls } = decodedBody;
-      const tabs = await chrome.tabs.query({ url: 'http://127.0.0.1:8000/' });
-      const tab = tabs[0]
-      const tabId = tab.id; // 保存初始的 Tab ID
-
-      console.log('taskUrls', taskUrls)
+      console.log('workType', workType, 'taskUrls', taskUrls)
       let items = []
       for (let taskUrl of taskUrls) {
         const { newsId, url, press, postTime } = taskUrl
         let text = await getNewsHtmlText(url);
-        let item = await postHtmlTextToContent(tabId, press, text);
+        let item = await parseHTMLV2(press, text);
         console.log('item', item)
-        if (!item) continue
+        
+        if (!Object.keys(item)?.length) {
+          console.group('get item failed.')
+          console.log(taskUrl)
+          console.groupEnd()
+          continue
+        }
         items.push({
           ...item,
           url: url,
@@ -78,32 +80,6 @@ chrome.webRequest.onBeforeRequest.addListener(
   ["requestBody"]
 );
 
-
-chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-  const { urls, press } = message;
-  console.log('urls', urls)
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  const tabId = tab.id; // 保存初始的 Tab ID
-  if (press === 'nytimes') {
-    // process news  
-    let items = []
-    for (let url of urls) {
-      let text = await getNewsHtmlText(url);
-      let item = await postHtmlTextToContent(tabId, press, text);
-      let newsId = url.match(/\/([a-zA-Z0-9-]+)\.html/)
-      items.push({
-        ...item,
-        newsId: newsId,
-        url: url,
-        press: press
-      })
-      await sleep(1000);
-    }
-    console.log(items)
-  }
-  return true; // Indicates that the response will be sent asynchronously
-});
-
 // loopUrl
 async function getNewsHtmlText(url) {
   // "https://www.nytimes.com/2024/10/29/science/animals-death-monso.html"
@@ -117,6 +93,7 @@ async function getNewsHtmlText(url) {
   }).then(res => res.text());
 }
 
+// parseHTML v1 傳到瀏覽器做處理
 async function postHtmlTextToContent(tabId, press, htmlText) {
   return new Promise((resolve, reject) => {
     chrome.tabs.sendMessage(tabId, { type: "PARSE_HTML", press: press, htmlText: htmlText }, (response) => {
@@ -244,3 +221,31 @@ async function main() {
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+
+// ---
+
+async function ensureOffscreen() {
+  if (await chrome.offscreen.hasDocument()) {
+    return;
+  }
+  await chrome.offscreen.createDocument({
+    url: 'offscreen/offscreen.html',
+    reasons: ['DOM_PARSER'], // 你可以自訂原因
+    justification: '需要 DOMParser 來解析 HTML',
+  });
+}
+
+async function parseHTMLV2(press, text) {
+  await ensureOffscreen();
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage(
+      { action: 'parseHTMLV2', press: press, text: text },
+      (response) => {
+        resolve(response);
+      }
+    );
+  });
+}
+
+

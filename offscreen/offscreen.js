@@ -1,10 +1,15 @@
-import * as parseNewsNytimes from './parseNews/nytimes'
+import {parseNews as parseNewsNytimes} from './parseNews/nytimes.js'
 
 function parseNews(press, doc) {
+  let item = undefined
   switch (press) {
     case 'nytimes':
-      return parseNewsNytimes(doc)
+      item = parseNewsNytimes(doc)
+      break
+    default:
+      break
   }
+  return item
 }
 
 function parseDoc(text) {

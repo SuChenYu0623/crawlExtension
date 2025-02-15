@@ -35,10 +35,10 @@ chrome.webRequest.onBeforeRequest.addListener(
       for (let taskUrl of taskUrls) {
         const { newsId, url, press, postTime } = taskUrl
         let text = await getNewsHtmlText(url);
-        let item = await parseHTMLV2(press, text);
+        let { item } = await parseHTMLV2(press, text);
         console.log('item', item)
-        
-        if (!Object.keys(item)?.length) {
+
+        if (!item) {
           console.group('get item failed.')
           console.log(taskUrl)
           console.groupEnd()

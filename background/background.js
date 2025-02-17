@@ -1,4 +1,5 @@
 import { collectUrls as collectUrlsNytimes } from "./newsUrls/collectUrls/nytimes.js";
+import { collectUrls as collectUrlsBBC } from "./newsUrls/collectUrls/bbc.js";
 
 chrome.runtime.onInstalled.addListener(async () => {
   console.log("Extension installed!");
@@ -202,6 +203,9 @@ function collectUrls(press) {
   switch (press) {
     case 'nytimes':
       urlsList = collectUrlsNytimes()
+      break
+    case 'bbc':
+      urlsList = collectUrlsBBC()
       break
     default:
       break

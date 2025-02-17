@@ -183,7 +183,7 @@ async function collectUrls() {
   let urlsList = []
   for (let cateId of cateIds) {
     console.group(`== cateId: ${cateId} ==`)
-    for (let page = 1; page < 10; page++) {
+    for (let page = 1; page < 3; page++) {
       let urls = await getNewsUrls(cateId, page)
       urlsList.push(...urls)
       console.log(`page: ${page}, urls: ${urls.length}, total: ${urlsList.length}`)

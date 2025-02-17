@@ -207,17 +207,6 @@ async function saveNewsUrls(urlsList) {
   }).then(res => res.json())
 }
 
-
-async function main() {
-  console.log(123)
-  let url = 'https://www.nytimes.com/2024/10/29/science/animals-death-monso.html'
-  let text = await getNewsHtmlText(url);
-  console.log('getNewsHtmlText finish')
-  let item = await postHtmlTextToContent('nytimes', text);
-  console.log('postHtmlTextToContent finish')
-  console.log(item)
-}
-
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }

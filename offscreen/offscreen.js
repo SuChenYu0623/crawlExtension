@@ -17,8 +17,9 @@ function parseDoc(text) {
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  const { action, press, text } = message
+  const { action } = message
   if (action === 'parseHTMLV2') {
+    const { press, text } = message
     const doc = parseDoc(text)
     const item = parseNews(press, doc)
     sendResponse({ item });

@@ -69,8 +69,14 @@ chrome.webRequest.onBeforeRequest.addListener(
 
       let urlsList = await collectUrls(press)
       console.log('urlsList', urlsList)
-      let res = await saveNewsUrls(urlsList)
-      console.log('saveNewsUrls', res)
+      // 分批存
+      while (1) {
+        if (!urlsList?.length) break
+        let res = await saveNewsUrls(urlsList.splice(urlsList.length-100))
+        console.log('saveNewsUrls', res)
+        await sleep(1000)
+      }
+
       // if (workType === 'collectUrls') {
       //   let urlsList = await collectUrls()
       //   console.log('urlsList', urlsList)

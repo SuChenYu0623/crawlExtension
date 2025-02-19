@@ -5,6 +5,7 @@ chrome.runtime.onInstalled.addListener(async () => {
   console.log("Extension installed!");
 });
 
+
 chrome.webRequest.onBeforeRequest.addListener(
   async (details) => {
     // 初步檢查 (不符就直接丟掉)
@@ -72,14 +73,14 @@ chrome.webRequest.onBeforeRequest.addListener(
       // 分批存
       while (1) {
         if (!urlsList?.length) break
-        let res = await saveNewsUrls(urlsList.splice(urlsList.length-100))
+        let res = await saveNewsUrls(urlsList.splice(urlsList.length - 100))
         console.log('saveNewsUrls', res)
         await sleep(1000)
       }
     }
     console.log('Finish Task.')
   },
-  { urls: ["<all_urls>"] }, // 設置監聽範圍
+  { urls: ["http://127.0.0.1:3000/*", "http://127.0.0.1:8000/*", "http://localhost:3000/*", "http://localhost:8000/*"] }, // 設置監聽範圍
   ["requestBody"]
 );
 

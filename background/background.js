@@ -8,6 +8,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 
 chrome.webRequest.onBeforeRequest.addListener(
   async (details) => {
+    console.log('增加一次', details.url)
     // 初步檢查 (不符就直接丟掉)
     if (details.method !== 'POST' ||
       !(details.url.includes('127.0.0.1') || details.url.includes('localhost'))
@@ -80,9 +81,10 @@ chrome.webRequest.onBeforeRequest.addListener(
     }
     console.log('Finish Task.')
   },
-  { urls: ["http://127.0.0.1:3000/*", "http://127.0.0.1:8000/*", "http://localhost:3000/*", "http://localhost:8000/*"] }, // 設置監聽範圍
+  { urls: ["http://127.0.0.1:3000/api/scheduler/loopUrlTask", "http://127.0.0.1:3000/api/scheduler/collectUrlsTask"] }, // 設置監聽範圍
   ["requestBody"]
 );
+
 
 // loopUrl
 async function getNewsHtmlText(url) {

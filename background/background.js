@@ -83,7 +83,7 @@ async function TaskListener(details) {
 
 chrome.webRequest.onBeforeRequest.addListener(
   TaskListener,
-  { urls: ["http://127.0.0.1:3000/api/scheduler/loopUrlTask", "http://127.0.0.1:3000/api/scheduler/collectUrlsTask"] }, // 設置監聽範圍
+  { urls: ["http://127.0.0.1:3000/api/scheduler/loopUrlTask", "http://127.0.0.1:3000/api/scheduler/collectUrlsTask", "http://127.0.0.1:8000/*"] }, // 設置監聽範圍
   ["requestBody"]
 );
 

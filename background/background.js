@@ -55,8 +55,14 @@ async function TaskListener(details) {
         postTime: postTime
       })
       await sleep(1000);
+
+      if (items?.length >= 20) {
+        console.log('items', items)
+        let res = await saveNewsItems(items)
+        console.log('res', res)
+        items = []
+      }
     }
-    console.log('items', items)
     let res = await saveNewsItems(items)
     console.log('res', res)
   }

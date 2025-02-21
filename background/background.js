@@ -78,7 +78,7 @@ async function TaskListener(details) {
     }
   }
   console.log('Finish Task.')
-  chrome.webRequest.onBeforeRequest.removeListener(TaskListener);
+  // chrome.webRequest.onBeforeRequest.removeListener(TaskListener);
 }
 
 chrome.webRequest.onBeforeRequest.addListener(

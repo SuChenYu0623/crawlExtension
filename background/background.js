@@ -10,7 +10,10 @@ async function TaskListener(details) {
   // 初步檢查 (不符就直接丟掉)
   if (details.method !== 'POST' ||
     !(details.url.includes('127.0.0.1') || details.url.includes('localhost'))
-  ) return
+  ) {
+    console.log('初步檢查 (不符就直接丟掉)')
+    return
+  }
 
   // 在 MV3 中解析請求 Body
   const requestBody = details.requestBody ? details.requestBody.raw : null;

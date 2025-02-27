@@ -9,6 +9,7 @@ function parseScript(doc) {
       .replace(/\\u003E/gm, '>')
       .replace(/\\\\/gm, `\\`)
       .replace(/\\\\"/gm, `\\"`)
+      .replace(/\\</gm, `<`)
       .replace(/undefined/gm, `"undefined"`)
     return JSON.parse(text)
   } catch (error) {

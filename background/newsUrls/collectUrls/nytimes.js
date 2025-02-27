@@ -54,6 +54,7 @@ async function getNewsUrls(cateId, page) {
         postTime: new Date(edge.node.firstPublished),
         press: "nytimes"
       }))
+      .filter(tmp => !tmp.url.includes("www.nytimes.com/video/"))
     )
     .catch(() => [])
 }

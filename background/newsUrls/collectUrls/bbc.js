@@ -222,7 +222,7 @@ export async function collectUrls() {
       let urls = await getNewsUrls(collectionId, path, page)
       console.log(page, urls)
       if (!urls?.length) break
-      if (page > 15) break
+      if (page > 5) break
       if (urls.find(url => !url.newsId)) break
       urlsList.push(...urls)
       page += 1

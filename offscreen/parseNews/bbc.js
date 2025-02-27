@@ -12,11 +12,11 @@ function parseImagesWithDesc(dom) {
       const imgDom = _dom.querySelector('[data-component="image-block"] img[srcset]')
       let src = imgDom.getAttribute('src')
       let alt = imgDom.getAttribute('alt')
-      let caption = _dom.querySelector('[data-component="caption-block"] > figcaption')?.innerText
+      let desc = _dom.querySelector('[data-component="caption-block"] > figcaption')?.innerText
       return {
         ...(src && { src }),
         ...(alt && { alt }),
-        ...(caption && { caption }),
+        ...(desc && { desc }),
       }
     })
 
@@ -59,6 +59,17 @@ export function parseNews(doc) {
       let dom = cleanHtml(mainDom)
       // 多圖 和 src
       images_with_desc = parseImagesWithDesc(dom)
+      // get image from from <head>
+      let src = doc.querySelector('[property="og:image"]')?.getAttribute('content')
+      let alt = doc.querySelector('[property="og:image:alt"]')?.getAttribute('content')
+      let desc = doc.querySelector('[property="og:description"]')?.getAttribute('content')
+      if (src || alt | desc) {
+        images_with_desc.push({
+          ...(src && { src }),
+          ...(alt && { alt }),
+          ...(desc && { desc }),
+        })
+      }
 
       // 拿不到 summary 直接拿內文
       dom.querySelectorAll('figure').forEach(_dom => _dom.remove())

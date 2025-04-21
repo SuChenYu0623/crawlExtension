@@ -64,7 +64,7 @@ export function parseNews(doc) {
       let alt = doc.querySelector('[property="og:image:alt"]')?.getAttribute('content')
       let desc = doc.querySelector('[property="og:description"]')?.getAttribute('content')
       images_with_desc.push({ src, alt, desc })
-      summary = __preloadedData.initialData.data.article.summary
+      summary = __preloadedData?.initialData?.data?.article?.summary || ''
     } else if (__preloadedData?.interactiveConfig?.interactive?.summary) {
       // https://www.nytimes.com/2024/12/29/world/asia/afghanistan-taliban-tourism.html
       Array.from(doc.querySelectorAll('.g-item-img > .g-image'))
@@ -77,7 +77,7 @@ export function parseNews(doc) {
             images_with_desc.push({ src, alt, desc })
           }
         })
-        summary = __preloadedData.interactiveConfig.interactive.summary
+        summary = __preloadedData?.interactiveConfig?.interactive?.summary || ''
     }
 
     // check news

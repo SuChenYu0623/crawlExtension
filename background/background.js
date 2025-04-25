@@ -38,6 +38,8 @@ async function TaskListener(details) {
     const { workType, taskUrls } = decodedBody;
     console.log('workType', workType, 'taskUrls', taskUrls)
     let items = []
+    let sucess = 0
+    let fail = 0
     for (let taskUrl of taskUrls) {
       const { newsId, url, press, postTime } = taskUrl
       let text = await getNewsHtmlText(url);
@@ -45,11 +47,13 @@ async function TaskListener(details) {
       console.log('item', item)
 
       if (!item) {
+        fail += 1
         console.group('get item failed.')
         console.log(taskUrl)
         console.groupEnd()
         continue
       }
+      sucess += 1
       items.push({
         ...item,
         url: url,
@@ -66,6 +70,7 @@ async function TaskListener(details) {
         items = []
       }
     }
+    console.log(`success: ${sucess}, fail: ${fail}`)
     let res = await saveNewsItems(items)
     console.log('res', res)
   }

@@ -12,7 +12,7 @@ function parseScript(doc) {
       .replace(/\\&lt;/gm, `<`)
       .replace(/\\\\/gm, `\\`)
       .replace(/\\\\"/gm, `\\"`)
-      .replace(/undefined/gm, `"undefined"`)
+      .replace(/undefined/gm, `false`)
     return JSON.parse(text)
   } catch (error) {
     console.log(`parseScript failed. ${error}`)

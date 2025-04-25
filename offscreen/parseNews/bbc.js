@@ -10,6 +10,7 @@ function parseImagesWithDesc(dom) {
   let images_with_desc = Array.from(dom.querySelectorAll('figure'))
     .map(_dom => {
       const imgDom = _dom.querySelector('[data-component="image-block"] img[srcset]')
+      if (!imgDom) return {}
       let src = imgDom.getAttribute('src')
       let alt = imgDom.getAttribute('alt')
       let desc = _dom.querySelector('[data-component="caption-block"] > figcaption')?.innerText
@@ -20,7 +21,23 @@ function parseImagesWithDesc(dom) {
       }
     })
 
-  return [...images_with_desc]
+  // 第二版
+  let images_with_desc_figcap = Array.from(dom.querySelectorAll('figure'))
+    .map(_dom => {
+      const imgDom = _dom.querySelector('[data-component="image-block"] img[srcset]')
+      if (!imgDom) return {}
+      let src = imgDom.getAttribute('src')
+      let alt = imgDom.getAttribute('alt')
+      let desc = _dom.querySelector('[data-component="caption-block"] > figcaption')?.innerText
+      return {
+        ...(src && { src }),
+        ...(alt && { alt }),
+        ...(desc && { desc }),
+      }
+    })
+
+
+  return [...images_with_desc, ...images_with_desc_figcap]
     .filter(item => Object.keys(item)?.length)
     .filter((item, index, arr) => arr.map(tmp => tmp.src).indexOf(item.src) === index)
 }

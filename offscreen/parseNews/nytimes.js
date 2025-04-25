@@ -3,13 +3,15 @@ function parseScript(doc) {
     let scriptText = Array.from(doc.querySelectorAll('script')).find(tmp => tmp.innerText.includes('window.__preloadedData = ')).innerText
     let text = scriptText
       .replace(/window.__preloadedData = /, '')
-      .slice(0, -1)
+      .slice(0, -1) // 排除字尾的 ;
       .replace(/\\u002F/gm, '/')
       .replace(/\\u003C/gm, '<')
       .replace(/\\u003E/gm, '>')
+      .replace(/\\&#34;/gm, `"`)
+      .replace(/\\&gt;/gm, `>`)
+      .replace(/\\&lt;/gm, `<`)
       .replace(/\\\\/gm, `\\`)
       .replace(/\\\\"/gm, `\\"`)
-      .replace(/\\</gm, `<`)
       .replace(/undefined/gm, `"undefined"`)
     return JSON.parse(text)
   } catch (error) {
